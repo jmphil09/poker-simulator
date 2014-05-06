@@ -17,7 +17,7 @@ object problem54 {
   
   //this function converts T,J,Q,K,A to 10,11,12,13,14 respectively
   def convertCards(card: Char): Int = card match {
-    /*case '2' => 2
+    case '2' => 2
     case '3' => 3
     case '4' => 4
     case '5' => 5
@@ -25,12 +25,12 @@ object problem54 {
     case '7' => 7
     case '8' => 8
     case '9' => 9
-    */case 'T' => 10
+    case 'T' => 10
     case 'J' => 11
     case 'Q' => 12
     case 'K' => 13
     case 'A' => 14
-    case _ => card.toInt
+    //case _ => card.toInt
   }                                               //> convertCards: (card: Char)Int
   
   //should probably refactor this
@@ -251,7 +251,7 @@ object problem54 {
     compareHands(findHand(p1Hand), findHand(p2Hand))
   }                                               //> findWinner: (hands: String)String
   
-  findWinner("8C TS KC 9H 4S 7D 2S 5D 3S AC")     //> res0: String = Player 1
+  findWinner("8C TS KC 9H 4S 7D 2S 5D 3S AC")     //> res0: String = Player 2
   
   findHand("8C TS KC 9H 4S")                      //> res1: problem54.Hand = HighCard(8C TS KC 9H 4S)
   findHand("5C AD 5D AC 9C")                      //> res2: problem54.Hand = TwoPair(5C AD 5D AC 9C)
@@ -271,7 +271,7 @@ object problem54 {
   
   def findP1Wins(): Int = {
   	var p1Wins = 0
-  	val hands = Source.fromFile("C:/Users/James/Desktop/git-workspace/poker-simulator/src/test.txt").getLines
+  	val hands = Source.fromFile("C:/Users/James/Desktop/git-workspace/poker-simulator/src/poker.txt").getLines
   	for(l <- hands){
   		if(findWinner(l)=="Player 1") p1Wins = p1Wins + 1
   	}
@@ -284,6 +284,50 @@ object problem54 {
   //val hand2 = findHand("9H 4D JC KS JS")
   //determinePair(List(12,8,5,12,10))
   //tieBreaker(hand1,hand2)
-  findWinner("TH 8H 5C QS TC 9H 4D JC KS JS")     //> res3: String = Player 2
+  findWinner("TH 8H 5C QS TC 9H 4D JC KS JS")     //> res3: String = Player 1
+  
+  //tests without tiebreakers
+  
+  //tests for tiebreakers
+  //tests for highcard
+  val highCardTest1 = "2H 3H 4C 5S 8C 2H 3D 4C 5S 7S"
+                                                  //> highCardTest1  : String = 2H 3H 4C 5S 8C 2H 3D 4C 5S 7S
+  val highCardTest2 = "AH KH QC JS 3C AH KD QC JS 2S"
+                                                  //> highCardTest2  : String = AH KH QC JS 3C AH KD QC JS 2S
+  val highCardTest3 = "AH KH QC JS 2C KH QD TC 5S 7S"
+                                                  //> highCardTest3  : String = AH KH QC JS 2C KH QD TC 5S 7S
+	assert(convertHand("AH KH QC JS 2C")==(Set(14, 13, 2, 12, 11),List(14, 13, 12, 11, 2)))
+
+  assert(findWinner(highCardTest1)=="Player 1")
+  assert(findWinner(highCardTest2)=="Player 1")
+  assert(findWinner(highCardTest3)=="Player 1")
+  
+  //tests for onepair
+  val onePairTest1 = "3H 3H 4C 5S 8C 2H 2D 4C 5S 7S"
+                                                  //> onePairTest1  : String = 3H 3H 4C 5S 8C 2H 2D 4C 5S 7S
+  val onePairTest2 = "2H 2H 4C 5S AC 2H 2D 4C 5S 7S"
+                                                  //> onePairTest2  : String = 2H 2H 4C 5S AC 2H 2D 4C 5S 7S
+  val onePairTest3 = "3H 3H 8C 7S 6C 3H 3D 8C 5S 7S"
+                                                  //> onePairTest3  : String = 3H 3H 8C 7S 6C 3H 3D 8C 5S 7S
+  assert(findWinner(onePairTest1)=="Player 1")
+  assert(findWinner(onePairTest2)=="Player 1")
+  assert(findWinner(onePairTest3)=="Player 1")
+  
+  //tests for twopair
+  val twoPairTest1 = "3H 3H 4C 4S 8C 3H 3D 4C 4S 7S"
+                                                  //> twoPairTest1  : String = 3H 3H 4C 4S 8C 3H 3D 4C 4S 7S
+  assert(findWinner(twoPairTest1)=="Player 1")
+  
+  //tests for 3 of a kind
+  
+  //tests for a straight
+  
+  //tests for a flush
+  
+  //test for full house
+  
+  //test for quads
+  
+  //test for straightflush
   
 }
