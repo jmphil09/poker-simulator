@@ -1,12 +1,26 @@
+package handManager
+
 import scala.io.Source
 
 import handManager._
 
-object problem54 {
-  
-  
-  
-  //this function converts T,J,Q,K,A to 10,11,12,13,14 respectively
+object handManagerWorksheet {
+
+class Hand(cards: String) {
+    var cardStr = cards
+  }
+  case class HighCard(cards: String) extends Hand(cards: String)
+  case class OnePair(cards: String) extends Hand(cards: String)
+  case class TwoPair(cards: String) extends Hand(cards: String)
+  case class ThreeOfAKind(cards: String) extends Hand(cards: String)
+  case class Straight(cards: String) extends Hand(cards: String)
+  case class Flush(cards: String) extends Hand(cards: String)
+  case class FullHouse(cards: String) extends Hand(cards: String)
+  case class FourOfAKind(cards: String) extends Hand(cards: String)
+  case class StraightFlush(cards: String) extends Hand(cards: String)
+	
+
+	//this function converts T,J,Q,K,A to 10,11,12,13,14 respectively
   def convertCards(card: Char): Int = card match {
     case '2' => 2
     case '3' => 3
@@ -22,7 +36,7 @@ object problem54 {
     case 'K' => 13
     case 'A' => 14
     //case _ => card.toInt
-  }
+  }                                               //> convertCards: (card: Char)Int
   
   //should probably refactor this
   //counts the copies in a list
@@ -38,7 +52,7 @@ object problem54 {
     else countCopies(list.tail, oldlist, maxInt)
     }
     
-  }
+  }                                               //> countCopies: (list: List[Int], oldlist: List[Int], maxInt: Int)Int
   
   //this function will convert a hand to a list and set
   def convertHand(hand: String): (Set[Int],List[Int]) = {
@@ -56,7 +70,7 @@ object problem54 {
     val cardList = List(card1,card2,card3,card4,card5)
     
     (cardSet,cardList)
-  }
+  }                                               //> convertHand: (hand: String)(Set[Int], List[Int])
   
   //this function will take a single players hand as a string and output the hand it represents
   def findHand(hand: String): Hand = {
@@ -69,8 +83,11 @@ object problem54 {
     val suit3 = hand(7)
     val suit4 = hand(10)
     val suit5 = hand(13)
+    
+    val suitSet = Set(suit1,suit2,suit3,suit4,suit5)
   
-    if(suit1==suit2==suit3==suit4==suit5) {
+  	//make this less sloppy
+    if(suitSet.size==1) {
       if(cardSet.max-cardSet.min==4) StraightFlush(hand)
       else Flush(hand)
     }
@@ -85,7 +102,7 @@ object problem54 {
     else if(cardSet.size==4) OnePair(hand)
     else if(cardSet.max-cardSet.min==4) Straight(hand)
     else HighCard(hand)
-  }
+  }                                               //> findHand: (hand: String)handManager.handManagerWorksheet.Hand
   
   //helper function for tiebreakers
   def compareHighCard(p1Set: Set[Int], p2Set: Set[Int]): String = {
@@ -94,7 +111,7 @@ object problem54 {
     if(p1Max==p2Max) compareHighCard(p1Set-p1Max,p2Set-p2Max)
     else if(p1Max > p2Max) "Player 1"
     else "Player 2"
-  }
+  }                                               //> compareHighCard: (p1Set: Set[Int], p2Set: Set[Int])String
   
   //helper function
   def determinePair(cardList: List[Int]): Int = {
@@ -109,7 +126,7 @@ object problem54 {
     
     if(cardList.length==2 || checkMatch(cardList.head, cardList)) cardList.head
     else determinePair(cardList.tail)
-  }
+  }                                               //> determinePair: (cardList: List[Int])Int
   
   def compareOnePair(p1Pair: (Set[Int],List[Int]), p2Pair: (Set[Int],List[Int])): String = {
     val p1Set = p1Pair._1
@@ -120,7 +137,8 @@ object problem54 {
     if(determinePair(p1List) > determinePair(p2List)) "Player 1"
     else if(determinePair(p1List) < determinePair(p2List)) "Player 2"
     else compareHighCard(p1Set,p2Set)
-  }
+  }                                               //> compareOnePair: (p1Pair: (Set[Int], List[Int]), p2Pair: (Set[Int], List[Int
+                                                  //| ]))String
   
   //TODO: combine this function with determinePair
   //helper function
@@ -138,7 +156,7 @@ object problem54 {
     val lowPair = List(pair1,pair2).min
     
     (highPair, lowPair)
-  }
+  }                                               //> determineTwoPair: (cardList: List[Int])(Int, Int)
   
   def compareTwoPair(p1List: List[Int], p2List: List[Int]): String = {
     val p1Pairs = determineTwoPair(p1List)
@@ -153,7 +171,7 @@ object problem54 {
     else if(p1LowPair > p2LowPair) "Player 1"
     else if(p1LowPair < p2LowPair) "Player 2"
     else compareHighCard(p1List.toSet,p2List.toSet)
-  }
+  }                                               //> compareTwoPair: (p1List: List[Int], p2List: List[Int])String
   
   //helper function
   def cardWithCopies(cardList: List[Int]): Int = {
@@ -175,7 +193,7 @@ object problem54 {
   	}
   	
   	result
-  }
+  }                                               //> cardWithCopies: (cardList: List[Int])Int
   
   def compareThreeOfAKind(p1List: List[Int], p2List: List[Int]): String = {
   	val p1Three = cardWithCopies(p1List)
@@ -184,7 +202,7 @@ object problem54 {
   	if(p1Three > p2Three) "Player 1"
   	else "Player 2"
   	
-  }
+  }                                               //> compareThreeOfAKind: (p1List: List[Int], p2List: List[Int])String
   
   //this function will be used to break the tie between hands
   def tieBreaker(p1Hand: Hand, p2Hand: Hand): String =  {
@@ -209,7 +227,8 @@ object problem54 {
       case (FourOfAKind(cards1),FourOfAKind(cards)) => compareThreeOfAKind(p1List,p2List)
       case (StraightFlush(cards1),StraightFlush(cards2)) => compareHighCard(p1Set,p2Set)
     }
-  }
+  }                                               //> tieBreaker: (p1Hand: handManager.handManagerWorksheet.Hand, p2Hand: handMan
+                                                  //| ager.handManagerWorksheet.Hand)String
   
   //a function for hand comparison
   def handAsValue(hand: Hand): Int = hand match{
@@ -222,7 +241,7 @@ object problem54 {
     case FullHouse(cards) => 7
     case FourOfAKind(cards) => 8
     case StraightFlush(cards) => 9
-  }
+  }                                               //> handAsValue: (hand: handManager.handManagerWorksheet.Hand)Int
   
   //this function will compare the two hands and output a winner
   def compareHands(p1Hand: Hand, p2Hand: Hand): String = {
@@ -232,27 +251,28 @@ object problem54 {
     if(p1Hval > p2Hval) "Player 1"
     else if(p2Hval > p1Hval) "Player 2"
     else tieBreaker(p1Hand, p2Hand)
-  }
+  }                                               //> compareHands: (p1Hand: handManager.handManagerWorksheet.Hand, p2Hand: handM
+                                                  //| anager.handManagerWorksheet.Hand)String
   
   //this function will take the string of hands from the input file and output which player has won
   def findWinner(hands: String): String = {
     val p1Hand = hands.dropRight(29-14)
     val p2Hand = hands.drop(15)
     compareHands(findHand(p1Hand), findHand(p2Hand))
-  }
+  }                                               //> findWinner: (hands: String)String
   
-  findWinner("8C TS KC 9H 4S 7D 2S 5D 3S AC")
+  findWinner("8C TS KC 9H 4S 7D 2S 5D 3S AC")     //> res0: String = Player 2
   
-  findHand("8C TS KC 9H 4S")
-  findHand("5C AD 5D AC 9C")
+  findHand("8C TS KC 9H 4S")                      //> res1: handManager.handManagerWorksheet.Hand = HighCard(8C TS KC 9H 4S)
+  findHand("5C AD 5D AC 9C")                      //> res2: handManager.handManagerWorksheet.Hand = TwoPair(5C AD 5D AC 9C)
   
   
   //TODO: write some tests for all of these functions!!!
   //tests for countCopies
-  val testlist1 = List(6,2,3,4,5)
-  val testlist2 = List(2,2,3,4,5)
-  val testlist3 = List(6,6,6,4,4)
-  val testlist4 = List(6,6,4,4,5)
+  val testlist1 = List(6,2,3,4,5)                 //> testlist1  : List[Int] = List(6, 2, 3, 4, 5)
+  val testlist2 = List(2,2,3,4,5)                 //> testlist2  : List[Int] = List(2, 2, 3, 4, 5)
+  val testlist3 = List(6,6,6,4,4)                 //> testlist3  : List[Int] = List(6, 6, 6, 4, 4)
+  val testlist4 = List(6,6,4,4,5)                 //> testlist4  : List[Int] = List(6, 6, 4, 4, 5)
   
   assert(countCopies(testlist1, testlist1, 0)==1)
   assert(countCopies(testlist2, testlist2, 0)==2)
@@ -261,56 +281,20 @@ object problem54 {
   
   def findP1Wins(): Int = {
   	var p1Wins = 0
-  	val hands = Source.fromFile("C:/Users/James/Desktop/git-workspace/poker-simulator/src/poker.txt").getLines
+  	val hands = Source.fromFile("C:/Users/fligh_000/Desktop/git-workspace/poker-simulator/src/poker.txt").getLines
   	for(l <- hands){
-  		if(findWinner(l)=="Player 1") p1Wins = p1Wins + 1
+  		if(findWinner(l)=="Player 2") p1Wins = p1Wins + 1
   	}
   	p1Wins
-  }
+  }                                               //> findP1Wins: ()Int
   
-  //findP1Wins
+  findP1Wins                                      //> res3: Int = 627
   
   //val hand1 = findHand("TH 8H 5C QS TC")
   //val hand2 = findHand("9H 4D JC KS JS")
   //determinePair(List(12,8,5,12,10))
   //tieBreaker(hand1,hand2)
-  findWinner("TH 8H 5C QS TC 9H 4D JC KS JS")
+  findWinner("TH 8H 5C QS TC 9H 4D JC KS JS")     //> res4: String = Player 1
   
-  //tests without tiebreakers
-  
-  //tests for tiebreakers
-  //tests for highcard
-  val highCardTest1 = "2H 3H 4C 5S 8C 2H 3D 4C 5S 7S"
-  val highCardTest2 = "AH KH QC JS 3C AH KD QC JS 2S"
-  val highCardTest3 = "AH KH QC JS 2C KH QD TC 5S 7S"
-	assert(convertHand("AH KH QC JS 2C")==(Set(14, 13, 2, 12, 11),List(14, 13, 12, 11, 2)))
 
-  assert(findWinner(highCardTest1)=="Player 1")
-  assert(findWinner(highCardTest2)=="Player 1")
-  assert(findWinner(highCardTest3)=="Player 1")
-  
-  //tests for onepair
-  val onePairTest1 = "3H 3H 4C 5S 8C 2H 2D 4C 5S 7S"
-  val onePairTest2 = "2H 2H 4C 5S AC 2H 2D 4C 5S 7S"
-  val onePairTest3 = "3H 3H 8C 7S 6C 3H 3D 8C 5S 7S"
-  assert(findWinner(onePairTest1)=="Player 1")
-  assert(findWinner(onePairTest2)=="Player 1")
-  assert(findWinner(onePairTest3)=="Player 1")
-  
-  //tests for twopair
-  val twoPairTest1 = "3H 3H 4C 4S 8C 3H 3D 4C 4S 7S"
-  assert(findWinner(twoPairTest1)=="Player 1")
-  
-  //tests for 3 of a kind
-  
-  //tests for a straight
-  
-  //tests for a flush
-  
-  //test for full house
-  
-  //test for quads
-  
-  //test for straightflush
-  
 }

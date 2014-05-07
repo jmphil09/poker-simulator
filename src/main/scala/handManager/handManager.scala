@@ -1,12 +1,24 @@
 import scala.io.Source
 
-import handManager._
+package handManager {
 
-object problem54 {
+object handManager {
   
-  
-  
-  //this function converts T,J,Q,K,A to 10,11,12,13,14 respectively
+  class Hand(cards: String) {
+    var cardStr = cards
+  }
+  case class HighCard(cards: String) extends Hand(cards: String)
+  case class OnePair(cards: String) extends Hand(cards: String)
+  case class TwoPair(cards: String) extends Hand(cards: String)
+  case class ThreeOfAKind(cards: String) extends Hand(cards: String)
+  case class Straight(cards: String) extends Hand(cards: String)
+  case class Flush(cards: String) extends Hand(cards: String)
+  case class FullHouse(cards: String) extends Hand(cards: String)
+  case class FourOfAKind(cards: String) extends Hand(cards: String)
+  case class StraightFlush(cards: String) extends Hand(cards: String)
+	
+
+	//this function converts T,J,Q,K,A to 10,11,12,13,14 respectively
   def convertCards(card: Char): Int = card match {
     case '2' => 2
     case '3' => 3
@@ -69,8 +81,11 @@ object problem54 {
     val suit3 = hand(7)
     val suit4 = hand(10)
     val suit5 = hand(13)
+    
+    val suitSet = Set(suit1,suit2,suit3,suit4,suit5)
   
-    if(suit1==suit2==suit3==suit4==suit5) {
+  	//make this less sloppy
+    if(suitSet.size==1) {
       if(cardSet.max-cardSet.min==4) StraightFlush(hand)
       else Flush(hand)
     }
@@ -261,56 +276,12 @@ object problem54 {
   
   def findP1Wins(): Int = {
   	var p1Wins = 0
-  	val hands = Source.fromFile("C:/Users/James/Desktop/git-workspace/poker-simulator/src/poker.txt").getLines
+  	val hands = Source.fromFile("C:/Users/fligh_000/Desktop/git-workspace/poker-simulator/src/poker.txt").getLines
   	for(l <- hands){
-  		if(findWinner(l)=="Player 1") p1Wins = p1Wins + 1
+  		if(findWinner(l)=="Player 2") p1Wins = p1Wins + 1
   	}
   	p1Wins
   }
-  
-  //findP1Wins
-  
-  //val hand1 = findHand("TH 8H 5C QS TC")
-  //val hand2 = findHand("9H 4D JC KS JS")
-  //determinePair(List(12,8,5,12,10))
-  //tieBreaker(hand1,hand2)
-  findWinner("TH 8H 5C QS TC 9H 4D JC KS JS")
-  
-  //tests without tiebreakers
-  
-  //tests for tiebreakers
-  //tests for highcard
-  val highCardTest1 = "2H 3H 4C 5S 8C 2H 3D 4C 5S 7S"
-  val highCardTest2 = "AH KH QC JS 3C AH KD QC JS 2S"
-  val highCardTest3 = "AH KH QC JS 2C KH QD TC 5S 7S"
-	assert(convertHand("AH KH QC JS 2C")==(Set(14, 13, 2, 12, 11),List(14, 13, 12, 11, 2)))
 
-  assert(findWinner(highCardTest1)=="Player 1")
-  assert(findWinner(highCardTest2)=="Player 1")
-  assert(findWinner(highCardTest3)=="Player 1")
-  
-  //tests for onepair
-  val onePairTest1 = "3H 3H 4C 5S 8C 2H 2D 4C 5S 7S"
-  val onePairTest2 = "2H 2H 4C 5S AC 2H 2D 4C 5S 7S"
-  val onePairTest3 = "3H 3H 8C 7S 6C 3H 3D 8C 5S 7S"
-  assert(findWinner(onePairTest1)=="Player 1")
-  assert(findWinner(onePairTest2)=="Player 1")
-  assert(findWinner(onePairTest3)=="Player 1")
-  
-  //tests for twopair
-  val twoPairTest1 = "3H 3H 4C 4S 8C 3H 3D 4C 4S 7S"
-  assert(findWinner(twoPairTest1)=="Player 1")
-  
-  //tests for 3 of a kind
-  
-  //tests for a straight
-  
-  //tests for a flush
-  
-  //test for full house
-  
-  //test for quads
-  
-  //test for straightflush
-  
+}
 }
