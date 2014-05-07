@@ -100,6 +100,8 @@ class HandManagerTest extends AssertionsForJUnit {
     val straightTest1 = "3H 2H 4H 5S 6D 9S 9D 2C 3S 7S"
     assert(findHand("3H 2H 4H 5S 6D") === Straight("3H 2H 4H 5S 6D"))
     assert(findWinner(straightTest1) === "Player 1")
+    val straightTest2 = "3H 2H 4H 5S AD 9S 9D 2C 3S 7S"
+    assert(findHand("3H 2H 4H 5S AD")===Straight("3H 2H 4H 5S AD"))
   }
 
   @Test
