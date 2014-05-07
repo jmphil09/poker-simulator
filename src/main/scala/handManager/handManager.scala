@@ -122,7 +122,7 @@ object handManager {
       result
     }
     
-    if(cardList.length==2 || checkMatch(cardList.head, cardList)) cardList.head
+    if(cardList.length==2 || checkMatch(cardList.head, cardList.tail)) cardList.head
     else determinePair(cardList.tail)
   }
   
@@ -255,24 +255,6 @@ object handManager {
     val p2Hand = hands.drop(15)
     compareHands(findHand(p1Hand), findHand(p2Hand))
   }
-  
-  findWinner("8C TS KC 9H 4S 7D 2S 5D 3S AC")
-  
-  findHand("8C TS KC 9H 4S")
-  findHand("5C AD 5D AC 9C")
-  
-  
-  //TODO: write some tests for all of these functions!!!
-  //tests for countCopies
-  val testlist1 = List(6,2,3,4,5)
-  val testlist2 = List(2,2,3,4,5)
-  val testlist3 = List(6,6,6,4,4)
-  val testlist4 = List(6,6,4,4,5)
-  
-  assert(countCopies(testlist1, testlist1, 0)==1)
-  assert(countCopies(testlist2, testlist2, 0)==2)
-  assert(countCopies(testlist3, testlist3, 0)==3)
-  assert(countCopies(testlist4, testlist4, 0)==2)
   
   def findP1Wins(): Int = {
   	var p1Wins = 0

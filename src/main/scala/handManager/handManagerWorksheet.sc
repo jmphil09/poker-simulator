@@ -124,7 +124,7 @@ class Hand(cards: String) {
       result
     }
     
-    if(cardList.length==2 || checkMatch(cardList.head, cardList)) cardList.head
+    if(cardList.length==2 || checkMatch(cardList.head, cardList.tail)) cardList.head
     else determinePair(cardList.tail)
   }                                               //> determinePair: (cardList: List[Int])Int
   
@@ -283,18 +283,20 @@ class Hand(cards: String) {
   	var p1Wins = 0
   	val hands = Source.fromFile("C:/Users/fligh_000/Desktop/git-workspace/poker-simulator/src/poker.txt").getLines
   	for(l <- hands){
-  		if(findWinner(l)=="Player 2") p1Wins = p1Wins + 1
+  		if(findWinner(l)=="Player 1") p1Wins = p1Wins + 1
   	}
   	p1Wins
   }                                               //> findP1Wins: ()Int
   
-  findP1Wins                                      //> res3: Int = 627
+  findP1Wins                                      //> res3: Int = 376
   
   //val hand1 = findHand("TH 8H 5C QS TC")
   //val hand2 = findHand("9H 4D JC KS JS")
   //determinePair(List(12,8,5,12,10))
   //tieBreaker(hand1,hand2)
-  findWinner("TH 8H 5C QS TC 9H 4D JC KS JS")     //> res4: String = Player 1
+  findWinner("TH 8H 5C QS TC 9H 4D JC KS JS")     //> res4: String = Player 2
+  
+  findWinner("TH 8H 5C QS TC 9H 4D JC KS JS")     //> res5: String = Player 2
   
 
 }
