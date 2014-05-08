@@ -1,4 +1,4 @@
-name := "hello"
+name := "poker-simulator"
  
 version := "1.0"
  
