@@ -133,13 +133,27 @@ class HandManagerTest extends AssertionsForJUnit {
 
   //tests for a straight
   @Test
-  def straight {
+  def straight() {
     val straightTest1 = "3H 2H 4H 5S 6D 9S 9D 2C 3S 7S"
     assert(findHand("3H 2H 4H 5S 6D") === Straight("3H 2H 4H 5S 6D"))
     assert(findWinner(straightTest1) === "Player 1")
     val straightTest2 = "3H 2H 4H 5S AD 9S 9D 2C 3S 7S"
     //TODO: Fix wheel straight  
     //assert(findHand("3H 2H 4H 5S AD")===Straight("3H 2H 4H 5S AD"))
+  }
+  
+  //tests for wheel straight
+  @Test
+  def wheelTest() {
+    //test highest vs lowest vs wheel
+    val wheelHand = "AC 2D 3H 4S 5S"
+    val lowStraight = "2H 3S 4C 5H 6H"
+    val highStraight = "AD KH QH JH TH"
+    assert(findHand(wheelHand)===Straight(wheelHand))
+    assert(findWinner(wheelHand + " " + lowStraight)==="Player 2")
+    assert(findWinner(wheelHand + " " + highStraight)==="Player 2")
+    assert(findWinner(highStraight + " " + lowStraight)==="Player 1")
+    //do the same for straight flushes
   }
 
   @Test
