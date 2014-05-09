@@ -17,23 +17,15 @@ object handManager {
   case class FourOfAKind(cards: String) extends Hand(cards: String)
   case class StraightFlush(cards: String) extends Hand(cards: String)
 	
-
+  //this function can probably be refactored
 	//this function converts T,J,Q,K,A to 10,11,12,13,14 respectively
   def convertCards(card: Char): Int = card match {
-    case '2' => 2
-    case '3' => 3
-    case '4' => 4
-    case '5' => 5
-    case '6' => 6
-    case '7' => 7
-    case '8' => 8
-    case '9' => 9
     case 'T' => 10
     case 'J' => 11
     case 'Q' => 12
     case 'K' => 13
     case 'A' => 14
-    //case _ => card.toInt
+    case _ => card.asDigit
   }
   
   //should probably refactor this
@@ -59,11 +51,6 @@ object handManager {
     val card3 = convertCards(hand(6))
     val card4 = convertCards(hand(9))
     val card5 = convertCards(hand(12))
-    val suit1 = hand(1)
-    val suit2 = hand(4)
-    val suit3 = hand(7)
-    val suit4 = hand(10)
-    val suit5 = hand(13)
     val cardSet = Set(card1,card2,card3,card4,card5)
     val cardList = List(card1,card2,card3,card4,card5)
     
