@@ -1,24 +1,12 @@
 import scala.io.Source
 
+import handManager.Hand._
+
 package handManager {
 
 object handManager {
-  
-  class Hand(cards: String) {
-    var cardStr = cards
-  }
-  case class HighCard(cards: String) extends Hand(cards: String)
-  case class OnePair(cards: String) extends Hand(cards: String)
-  case class TwoPair(cards: String) extends Hand(cards: String)
-  case class ThreeOfAKind(cards: String) extends Hand(cards: String)
-  case class Straight(cards: String) extends Hand(cards: String)
-  case class Flush(cards: String) extends Hand(cards: String)
-  case class FullHouse(cards: String) extends Hand(cards: String)
-  case class FourOfAKind(cards: String) extends Hand(cards: String)
-  case class StraightFlush(cards: String) extends Hand(cards: String)
-	
-  //this function can probably be refactored
-	//this function converts T,J,Q,K,A to 10,11,12,13,14 respectively
+
+  //this function converts T,J,Q,K,A to 10,11,12,13,14 respectively
   def convertCards(card: Char): Int = card match {
     case 'T' => 10
     case 'J' => 11
@@ -29,7 +17,7 @@ object handManager {
   }
   
   //should probably refactor this
-  //counts the copies in a list
+  //finds the maximum times an element is repeated in a list
   def countCopies(list: List[Int], oldlist: List[Int], maxInt: Int): Int = {
     var counter = 0
     
@@ -61,19 +49,16 @@ object handManager {
   def findHand(hand: String): Hand = {
     val cardPair = convertHand(hand)
     val cardSet = cardPair._1
-    val cardList = cardPair._2
-  
+    val cardList = cardPair._2  
     val suit1 = hand(1)
     val suit2 = hand(4)
     val suit3 = hand(7)
     val suit4 = hand(10)
-    val suit5 = hand(13)
-    
+    val suit5 = hand(13)   
     val suitSet = Set(suit1,suit2,suit3,suit4,suit5)
   
-  	//make this less sloppy
     if(suitSet.size==1) {
-      if(cardSet.max-cardSet.min==4) StraightFlush(hand)
+      if(cardSet.max-cardSet.min==4 || cardSet==Set(2,3,4,5,14)) StraightFlush(hand)
       else Flush(hand)
     }
     else if(cardSet.size==2) {
@@ -85,7 +70,7 @@ object handManager {
       else TwoPair(hand)
     }
     else if(cardSet.size==4) OnePair(hand)
-    else if(cardSet.max-cardSet.min==4) Straight(hand)
+    else if(cardSet.max-cardSet.min==4 || cardSet==Set(2,3,4,5,14)) Straight(hand)
     else HighCard(hand)
   }
   
@@ -98,6 +83,17 @@ object handManager {
     else "Player 2"
   }
   
+  def compareStraight(p1Set: Set[Int], p2Set: Set[Int]): String = {
+    var p1Wheel = false
+    var p2Wheel = false
+    if(p1Set==Set(2,3,4,5,14)) p1Wheel = true
+    if(p2Set==Set(2,3,4,5,14)) p2Wheel = true
+    
+    if(p1Wheel && !p2Wheel) "Player 2"
+    else if(p2Wheel && !p1Wheel) "Player 1"
+    else(compareHighCard(p1Set,p2Set))
+  }
+  
   //helper function
   def determinePair(cardList: List[Int]): Int = {
     //helper function
@@ -107,8 +103,7 @@ object handManager {
         if(num==list(i)) result = true
       }
       result
-    }
-    
+    }    
     if(cardList.length==2 || checkMatch(cardList.head, cardList.tail)) cardList.head
     else determinePair(cardList.tail)
   }
@@ -205,11 +200,11 @@ object handManager {
       case (OnePair(cards1),OnePair(cards2)) => compareOnePair(p1Pair,p2Pair)
       case (TwoPair(cards1),TwoPair(cards2)) => compareTwoPair(p1List,p2List)
       case (ThreeOfAKind(cards1),ThreeOfAKind(cards2)) => compareThreeOfAKind(p1List,p2List)
-      case (Straight(cards1),Straight(cards2)) => compareHighCard(p1Set,p2Set)
+      case (Straight(cards1),Straight(cards2)) => compareStraight(p1Set,p2Set)
       case (Flush(cards1),Flush(cards2)) => compareHighCard(p1Set,p2Set)
       case (FullHouse(cards1),FullHouse(cards2)) => compareThreeOfAKind(p1List,p2List)
       case (FourOfAKind(cards1),FourOfAKind(cards)) => compareThreeOfAKind(p1List,p2List)
-      case (StraightFlush(cards1),StraightFlush(cards2)) => compareHighCard(p1Set,p2Set)
+      case (StraightFlush(cards1),StraightFlush(cards2)) => compareStraight(p1Set,p2Set)
     }
   }
   

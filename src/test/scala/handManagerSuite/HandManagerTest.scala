@@ -1,13 +1,17 @@
 package handManagerSuite
 
+
+
 import org.scalatest.junit.AssertionsForJUnit
 import org.junit.Assert._
 import org.junit._
 
+
 import handManager.handManager._
+import handManager._
 
 class HandManagerTest extends AssertionsForJUnit {
-
+  
   @Test
   def sanityCheck() {
     assert(0 === 0)
@@ -154,6 +158,13 @@ class HandManagerTest extends AssertionsForJUnit {
     assert(findWinner(wheelHand + " " + highStraight)==="Player 2")
     assert(findWinner(highStraight + " " + lowStraight)==="Player 1")
     //do the same for straight flushes
+    val wheelFlush = "AC 2C 3C 4C 5C"
+    val lowStraightFlush = "2H 3H 4H 5H 6H"
+    val highStraightFlush = "AH KH QH JH TH"
+    assert(findHand(wheelFlush)===StraightFlush(wheelFlush))
+    assert(findWinner(wheelFlush + " " + lowStraightFlush)==="Player 2")
+    assert(findWinner(wheelFlush + " " + highStraightFlush)==="Player 2")
+    assert(findWinner(highStraightFlush + " " + lowStraightFlush)==="Player 1")
   }
 
   @Test
