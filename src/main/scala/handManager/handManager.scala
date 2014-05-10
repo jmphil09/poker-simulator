@@ -238,14 +238,5 @@ object handManager {
     compareHands(findHand(p1Hand), findHand(p2Hand))
   }
   
-  def findP1Wins(): Int = {
-  	var p1Wins = 0
-  	val hands = Source.fromFile("C:/Users/fligh_000/Desktop/git-workspace/poker-simulator/src/poker.txt").getLines
-  	for(l <- hands){
-  		if(findWinner(l)=="Player 2") p1Wins = p1Wins + 1
-  	}
-  	p1Wins
-  }
-
 }
 }
