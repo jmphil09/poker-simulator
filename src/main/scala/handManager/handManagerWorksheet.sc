@@ -98,8 +98,6 @@ object handManagerWorksheet {
     val deck = createDeckStr(nums, suits, "").drop(1)
     deck
   }                                               //> createDeckNums: ()String
-
-  createDeckNums.length                           //> res0: Int = 175
   
   def createDeck(str: String): String = {
   
@@ -112,26 +110,27 @@ object handManagerWorksheet {
   		case _ => chars
   	}
   	
-  	var result = str
-  	for(i <- 0 to 10){
-  	//println(replaceChars(result(i).toString++result(i+1).toString))
-  		val chars = replaceChars(result(i).toString++result(i+1).toString)
+  	var result = ""
+  	var i = 0
+  	while(i < str.length-1){
+  		val chars = replaceChars(str(i).toString++str(i+1).toString)
   		if(chars=="T"||chars=="J"||chars=="Q"||chars=="K"||chars=="A") {
-  		println("YIPE"++result.dropRight(i)++"YIPE")
-  			//result = result.drop(i) ++ chars ++ result.drop(i).dropRight(result.length-(i+1+1))
+				result += chars
+				i = i+2
   		}
-  		//result
+  		else {
+  		result += str(i)
+  		i=i+1
+  		}
   	}
-  result
+  result++str(174).toString
  }                                                //> createDeck: (str: String)String
+ 
+ val deck = createDeckNums                        //> deck  : String = 7C 14H 13H 12C 3H 3D 7D 4D 5D 6S 8D 12C 3C 7H 4D 11S 5C 9C
+                                                  //|  2C 4S 8H 7D 8S 14H 4S 9D 9H 14H 12S 6S 9D 11D 11C 13D 14H 8D 11C 12S 6C 6D
+                                                  //|  5C 10S 2S 3H 13H 5H 13H 2C 10C 10S 10S 2S
   
-  createDeck(createDeckNums)                      //> YIPE6S 11H 4H 10S 11S 10S 8H 6H 11H 9C 3S 14D 12C 6S 14D 6H 4H 11D 5C 7H 9D
-                                                  //|  5H 7C 8H 4D 14D 8D 3D 10C 13S 2D 5D 12C 12C 14D 2C 9D 13C 8C 3D 7S 5H 3C 7
-                                                  //| C 10C 13H 13S 4S 9S 12S 2SYIPE
-                                                  //| YIPE6S 11H 4H 10S 11S 10S 8H 6H 11H 9C 3S 14D 12C 6S 14D 6H 4H 11D 5C 7H 9D
-                                                  //|  5H 7C 8H 4D 14D 8D 3D 10C 13S 2D 5D 12C 12C 14D 2C 9D 13C 8C 3D 7S 5H 3C 7
-                                                  //| C 10C 13H 13S 4S 9SYIPE
-                                                  //| res1: String = 6S 11H 4H 10S 11S 10S 8H 6H 11H 9C 3S 14D 12C 6S 14D 6H 4H 1
-                                                  //| 1D 5C 7H 9D 5H 7C 8H 4D 14D 8D 3D 10C 13S 2D 5D 12C 12C 14D 2C 9D 13C 8C 3D
-                                                  //|  7S 5H 3C 7C 10C 13H 13S 4S 9S 12S 2S 2H
+  createDeck(deck)                                //> res0: String = 7C AH KH QC 3H 3D 7D 4D 5D 6S 8D QC 3C 7H 4D JS 5C 9C 2C 4S 
+                                                  //| 8H 7D 8S AH 4S 9D 9H AH QS 6S 9D JD JC KD AH 8D JC QS 6C 6D 5C TS 2S 3H KH 
+                                                  //| 5H KH 2C TC TS TS 2S
 }
