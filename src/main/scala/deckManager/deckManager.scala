@@ -4,7 +4,28 @@ import scala.util.Random._
 import scala.collection._
 
 object deckManager {
-  
+
+  def shuffleDeck(): String = {
+
+    val cardList = List("2H", "2C", "2S", "2D", "3H", "3C", "3S", "3D", "4H", "4C", "4S", "4D", "5H", "5C", "5S", "5D",
+      "6H", "6C", "6S", "6D", "7H", "7C", "7S", "7D", "8H", "8C", "8S", "8D", "9H", "9C", "9S", "9D", "TH", "TC", "TS", "TD",
+      "JH", "JC", "JS", "JD", "QH", "QC", "QS", "QD", "KH", "KC", "KS", "KD", "AH", "AC", "AS", "AD")
+
+    def randomizeDeck(cardList: List[String], deck: String): String = {
+      if (cardList.isEmpty) deck
+      else {
+        val randInt = nextInt(cardList.length)
+        val randCard = cardList(randInt)
+        val newCardList = cardList.filterNot(_ == randCard)
+
+        if (deck == "") randomizeDeck(newCardList, randCard)
+        else randomizeDeck(newCardList, deck ++ " " ++ randCard)
+      }
+    }
+    
+    randomizeDeck(cardList, "")
+  }
+
   def createDeckNums(): String = {
 
     def createDeckNumbers(): List[Int] = {
@@ -96,36 +117,35 @@ object deckManager {
     val deck = createDeckStr(nums, suits, "").drop(1)
     deck
   }
-  
+
   def createDeck(str: String): String = {
-  
-  	def replaceChars(chars: String): String = chars match {
-  		case "10" => "T"
-  		case "11" => "J"
-  		case "12" => "Q"
-  		case "13" => "K"
-  		case "14" => "A"
-  		case _ => chars
-  	}
-  	
-  	var result = ""
-  	var i = 0
-  	while(i < str.length-1){
-  		val chars = replaceChars(str(i).toString++str(i+1).toString)
-  		if(chars=="T"||chars=="J"||chars=="Q"||chars=="K"||chars=="A") {
-				result += chars
-				i = i+2
-  		}
-  		else {
-  		result += str(i)
-  		i=i+1
-  		}
-  	}
-  result++str(174).toString
- }
- 
- //val deckNums = createDeckNums
-  
- //val deck = createDeck(deckNums)
+
+    def replaceChars(chars: String): String = chars match {
+      case "10" => "T"
+      case "11" => "J"
+      case "12" => "Q"
+      case "13" => "K"
+      case "14" => "A"
+      case _ => chars
+    }
+
+    var result = ""
+    var i = 0
+    while (i < str.length - 1) {
+      val chars = replaceChars(str(i).toString ++ str(i + 1).toString)
+      if (chars == "T" || chars == "J" || chars == "Q" || chars == "K" || chars == "A") {
+        result += chars
+        i = i + 2
+      } else {
+        result += str(i)
+        i = i + 1
+      }
+    }
+    result ++ str(174).toString
+  }
+
+  //val deckNums = createDeckNums
+
+  //val deck = createDeck(deckNums)
 
 }
