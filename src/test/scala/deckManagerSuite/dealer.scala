@@ -1,0 +1,5 @@
+package deckManagerSuite
+
+object dealer {
+
+}
