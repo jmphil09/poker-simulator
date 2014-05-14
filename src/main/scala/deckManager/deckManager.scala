@@ -1,7 +1,6 @@
 package deckManager
 
 import scala.util.Random._
-import scala.collection._
 
 object deckManager {
 
