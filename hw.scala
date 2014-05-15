@@ -1,1 +1,1 @@
-object Hi { def main(args: Array[String]) = println("Hi!") }
+object pokerSimulatorGreeting { def main(args: Array[String]) = println("Welcome to poker-simulator!") }
