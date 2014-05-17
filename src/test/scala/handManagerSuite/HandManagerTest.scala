@@ -4,6 +4,7 @@ import org.scalatest.junit.AssertionsForJUnit
 import org.junit.Assert._
 import org.junit._
 
+import handManager.compareHands._
 import handManager.handManager._
 import handManager._
 
