@@ -1,64 +1,60 @@
 package handManagerSuite
 
-import org.scalatest.junit.AssertionsForJUnit
-import org.junit.Assert._
-import org.junit._
+import org.scalatest._
 
 import handManager.compareHands._
 import handManager.handManager._
 import handManager._
 
-class HandManagerTest extends AssertionsForJUnit {
-  
-  @Test
-  def sanityCheck() {
-    assert(0 === 0)
-    assert(1 === 1)
-  }
+class HandManagerTest extends FlatSpec with Matchers {
 
-  //tests for convertCards
-  @Test
-  def convertCardTest() {
-    assert(convertCards('2')===2)
-    assert(convertCards('3')===3)
-    assert(convertCards('4')===4)
-    assert(convertCards('5')===5)
-    assert(convertCards('6')===6)
-    assert(convertCards('7')===7)
-    assert(convertCards('8')===8)
-    assert(convertCards('9')===9)
-    assert(convertCards('T')===10)
-    assert(convertCards('J')===11)
-    assert(convertCards('Q')===12)
-    assert(convertCards('K')===13)
-    assert(convertCards('A')===14)
+  "Sanity Check" should "prove 0==0" in {
+    0 should be (0)
   }
   
-  //tests for countCopies
-  @Test
-  def countCopiesTest() {
+  it should "prove 1==1" in {
+    1 should be (1)
+  }  
+  
+  "ConvertCard" should "convert every card properly" in {    
+    convertCards('2') should be (2)
+    convertCards('3') should be (3)
+    convertCards('4') should be (4)
+    convertCards('5') should be (5)
+    convertCards('6') should be (6)
+    convertCards('7') should be (7)
+    convertCards('8') should be (8)
+    convertCards('9') should be (9)
+    convertCards('T') should be (10)
+    convertCards('J') should be (11)
+    convertCards('Q') should be (12)
+    convertCards('K') should be (13)
+    convertCards('A') should be (14)
+  }
+  
+  "countCopies" should "work properly" in {
     val copiesList1 = List(2,2,3,4,5)
     val copiesList2 = List(10,10,10,4,4)
     val copiesList3 = List(10,10,4,4,4)
-    assert(countCopies(copiesList1,copiesList1,0)===2)
-    assert(countCopies(copiesList2,copiesList2,0)===3)
-    assert(countCopies(copiesList3,copiesList3,0)===3)
+    countCopies(copiesList1,copiesList1,0) should be (2)
+    countCopies(copiesList2,copiesList2,0) should be (3)
+    countCopies(copiesList3,copiesList3,0) should be (3)
     val testlist1 = List(6, 2, 3, 4, 5)
     val testlist2 = List(2, 2, 3, 4, 5)
     val testlist3 = List(6, 6, 6, 4, 4)
     val testlist4 = List(6, 6, 4, 4, 5)
-    assert(countCopies(testlist1, testlist1, 0) === 1)
-    assert(countCopies(testlist2, testlist2, 0) === 2)
-    assert(countCopies(testlist3, testlist3, 0) === 3)
-    assert(countCopies(testlist4, testlist4, 0) === 2)
+    countCopies(testlist1, testlist1, 0) should be (1)
+    countCopies(testlist2, testlist2, 0) should be (2)
+    countCopies(testlist3, testlist3, 0) should be (3)
+    countCopies(testlist4, testlist4, 0) should be (2)
   }
   
-  //tests for convertHand
-  @Test
-  def convertHandTest() {
+  "convertHand" should "work properly" in {
     val hand1 = "3H 3H 4C 5S 8C"
-      assert(convertHand(hand1)===(Set(3,4,5,8),List(3,3,4,5,8)))
+      convertHand(hand1) should be ((Set(3,4,5,8),List(3,3,4,5,8)))
   }
+  
+  /*
   
   //tests for highcard
   @Test
@@ -238,5 +234,5 @@ class HandManagerTest extends AssertionsForJUnit {
     val straightFlushTest2 = "9H TH JH QH KH 2H 3H 4H 5H 6H"
     assert(findWinner(straightFlushTest2) === "Player 1")
   }
-
+*/
 }
