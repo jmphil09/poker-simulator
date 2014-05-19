@@ -1,8 +1,47 @@
-package handManager
+import handManager.handManager._
+
+package handManager {
 
 object compareHands {
+
+  //this function will be used to break the tie between hands
+  def tieBreaker(p1Hand: Hand, p2Hand: Hand): String =  {
+  
+    val p1Pair = handAsOrderedPair(p1Hand.getCards)
+    val p2Pair = handAsOrderedPair(p2Hand.getCards)
+    val p1Set = p1Pair._1
+    val p1List = p1Pair._2
+    val p2Set = p2Pair._1
+    val p2List = p2Pair._2
+  
+    (p1Hand,p2Hand) match {
+      case (HighCard(cards1),HighCard(cards2)) => compareHighCard(p1Set,p2Set)
+      case (OnePair(cards1),OnePair(cards2)) => compareOnePair(p1Pair,p2Pair)
+      case (TwoPair(cards1),TwoPair(cards2)) => compareTwoPair(p1List,p2List)
+      case (ThreeOfAKind(cards1),ThreeOfAKind(cards2)) => compareThreeOfAKind(p1List,p2List)
+      case (Straight(cards1),Straight(cards2)) => compareStraight(p1Set,p2Set)
+      case (Flush(cards1),Flush(cards2)) => compareHighCard(p1Set,p2Set)
+      case (FullHouse(cards1),FullHouse(cards2)) => compareThreeOfAKind(p1List,p2List)
+      case (FourOfAKind(cards1),FourOfAKind(cards)) => compareThreeOfAKind(p1List,p2List)
+      case (StraightFlush(cards1),StraightFlush(cards2)) => compareStraight(p1Set,p2Set)
+    }
+  }
+
+  //this function will convert a hand to a list and set
+  def handAsOrderedPair(hand: String): (Set[Int],List[Int]) = {
+    val card1 = convertCards(hand(0))
+    val card2 = convertCards(hand(3))
+    val card3 = convertCards(hand(6))
+    val card4 = convertCards(hand(9))
+    val card5 = convertCards(hand(12))
+    val cardSet = Set(card1,card2,card3,card4,card5)
+    val cardList = List(card1,card2,card3,card4,card5)
+    
+    (cardSet,cardList)
+  }
+
 //should probably refactor this
-  //finds the maximum times an element is repeated in a list
+  //finds the maximum number of copies for ANY element in the list 
   def countCopies(list: List[Int], oldlist: List[Int], maxInt: Int): Int = {
     var counter = 0
     
@@ -125,4 +164,5 @@ object compareHands {
   	else "Player 2"
   	
   }
+}
 }
