@@ -33,10 +33,23 @@ object handManagerWorksheet {
                                                   //|  5 -> List(5), 4 -> List(4), 3 -> List(3, 3))
   listMap(3).size                                 //> res3: Int = 2
   
+  
+  
+  
+  def betterCountCopies(list: List[Int]): Int = {
+  	val listMap = list.groupBy(x=>x)
+  	
+  	var doubles = List((0,0))
   for(key <- listMap){
-  	println(key._1,key._2.size)               //> (2,1)
-                                                  //| (5,1)
-                                                  //| (4,1)
-                                                  //| (3,2)
+  	doubles = doubles ++ List((key._1,key._2.size))
   }
+  
+  doubles
+  val swapDoubles = doubles.map(x => x.swap)
+  doubles.max
+  swapDoubles.max._1
+  }                                               //> betterCountCopies: (list: List[Int])Int
+  
+  countCopies(list1,list1,0)                      //> res4: Int = 2
+  betterCountCopies(list1)                        //> res5: Int = 2
 }
