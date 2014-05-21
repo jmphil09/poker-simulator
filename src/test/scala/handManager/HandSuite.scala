@@ -1,0 +1,5 @@
+package handManager
+
+class HandSuite {
+
+}

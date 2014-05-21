@@ -1,12 +1,12 @@
-package deckManagerSuite
+package deckManager
 
 import org.scalatest._
 import scala.util.Random._
 
-import deckManager.dealer._
+import dealer._
 
-class dealer extends FlatSpec with Matchers {
-
+class dealerSuite extends FlatSpec with Matchers {
+  
   val holdemHandNum = nextInt(8)+2
   val holdem = dealHoldem(holdemHandNum)
   val studHandNum = nextInt(4)+2
@@ -38,4 +38,5 @@ class dealer extends FlatSpec with Matchers {
 	  val leftOverSize = 155-studHandNum*14-studHandNum
       leftOverDeck.size should be (leftOverSize)
     }
+
 }
