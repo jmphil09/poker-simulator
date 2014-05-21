@@ -55,6 +55,11 @@ package object handManager {
   }
 
   //HELPER FUNCTIONS
+  //this function will determine if 2 hands should tie
+  //In order for 2 hands to tie, the cards must be equal, or they must be equal straights, or equal flushes
+  def tieHands(p1Hand: Hand, p1Set: Set[Int], p2Hand: Hand, p2Set: Set[Int]): Boolean = {
+    ((p1Set==p2Set) || (p1Set==p2Set && p1Hand.handValue==p2Hand.handValue))
+  }
   //this function will be used to break the tie between hands
   def tieBreaker(p1Hand: Hand, p2Hand: Hand): String = {
 
@@ -64,6 +69,8 @@ package object handManager {
     val p1List = p1Pair._2
     val p2Set = p2Pair._1
     val p2List = p2Pair._2
+
+    if(tieHands(p1Hand, p1Set, p2Hand, p2Set)) return "Tie"
 
     (p1Hand, p2Hand) match {
       case (HighCard(cards1), HighCard(cards2)) => compareHighCard(p1Set, p2Set)

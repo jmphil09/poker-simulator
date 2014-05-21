@@ -199,4 +199,39 @@ class handManagerSuite extends FlatSpec with Matchers {
     val straightFlushTest2 = "9H TH JH QH KH 2H 3H 4H 5H 6H"
     findWinner(straightFlushTest2) should be ("Player 1")
   }
+
+  "handTies" should "make sure equal hands can tie" in {
+    val highCardTieHand = findHand("2H 3H 4S 8D 6H")
+    val onePairTieHand = findHand("2H 2D 4H 5H 6H")
+    val twoPairTieHand = findHand("2H 2D 4H 4D 6H")
+    val threeOfAKindTiehand = findHand("2H 2D 2S 5H 6H")
+    val straightTieHand = findHand("2H 3H 4H 5D 6H")
+    val flushTieHand = findHand("2H 3H 4H 5H 9H")
+    val fullHouseTieHand = findHand("2H 2D 2S 5H 5D")
+    val fourOfAKindTieHand = findHand("2H 2S 2D 2C 6H")
+    val straightFlushTieHand = findHand("2H 3H 4H 5H 6H")
+
+    compareHands(highCardTieHand,highCardTieHand) should be ("Tie")
+    compareHands(onePairTieHand,onePairTieHand) should be ("Tie")
+    compareHands(twoPairTieHand,twoPairTieHand) should be ("Tie")
+    compareHands(threeOfAKindTiehand,threeOfAKindTiehand) should be ("Tie")
+    compareHands(straightTieHand,straightTieHand) should be ("Tie")
+    compareHands(flushTieHand,flushTieHand) should be ("Tie")
+    compareHands(fullHouseTieHand,fullHouseTieHand) should be ("Tie")
+    compareHands(fourOfAKindTieHand,fourOfAKindTieHand) should be ("Tie")
+    compareHands(straightFlushTieHand,straightFlushTieHand) should be ("Tie")
+  }
+
+  it should "make sure straights and flushes of different suites can tie" in {
+    val straight1 = findHand("2D 3H 4S 5D 6H")
+    val straight2 = findHand("2H 3D 4H 5S 6D")
+    val flush1 = findHand("QH 4H TH JH 2H")
+    val flush2 = findHand("QS 4S TS JS 2S")
+    val straightFlush1 = findHand("2H 3H 4H 5H 6H")
+    val straightFlush2 = findHand("2C 3C 4C 5C 6C")
+
+    compareHands(straight1,straight2) should be ("Tie")
+    compareHands(flush2,flush1) should be ("Tie")
+    compareHands(straightFlush1,straightFlush2) should be ("Tie")
+  }
 }
