@@ -1,12 +1,8 @@
-package handManagerSuite
+package handManager
 
 import org.scalatest._
 
-import handManager.compareHands._
-import handManager.handManager._
-import handManager._
-
-class HandManagerTest extends FlatSpec with Matchers {
+class handManagerSuite extends FlatSpec with Matchers {
 
   "Sanity Check" should "prove 0==0" in {
     0 should be (0)
