@@ -1,3 +1,5 @@
+import play.Project._
+
 name := "poker-simulator"
  
 version := "1.0"
