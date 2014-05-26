@@ -109,7 +109,7 @@ class multipleHandsSuite extends FlatSpec with Matchers {
   it should "compare 8 hands" in {
     compareMultHands(addPlayerIndex(handListTest8)) should be (List(Set("Player 7"), Set("Player 8"), Set("Player 5"), Set("Player 6"), 
       Set("Player 4"), Set("Player 1"), Set("Player 3"), Set("Player 2")))
-    compareMultHands(addPlayerIndex(handListTest8Tie)) should be (List(Set("Player 1", "Player 7", "PLayer 8", "Player 5", "Player 6", 
+    compareMultHands(addPlayerIndex(handListTest8Tie)) should be (List(Set("Player 1", "Player 7", "Player 8", "Player 5", "Player 6", 
       "Player 3", "Player 2", "Player 4")))
     compareMultHands(addPlayerIndex(handListTest8SameRank)) should be (List(Set("Player 8"), Set("Player 7"), Set("Player 6"), 
       Set("Player 5"), Set("Player 4"), Set("Player 3"), Set("Player 2"), Set("Player 1")))
@@ -118,24 +118,25 @@ class multipleHandsSuite extends FlatSpec with Matchers {
   }
 
   it should "compare 9 hands" in {
-    compareMultHands(addPlayerIndex(handListTest8)) should be (List(Set("Player 7"), Set("Player 8"), Set("Player 5"), Set("Player 6"), 
+    compareMultHands(addPlayerIndex(handListTest9)) should be (List(Set("Player 7"), Set("Player 8"), Set("Player 5"), Set("Player 6"), 
       Set("Player 4"), Set("Player 1"), Set("Player 3"), Set("Player 2"), Set("Player 9")))
-    compareMultHands(addPlayerIndex(handListTest8Tie)) should be (List(Set("Player 1", "Player 7", "PLayer 8", "Player 5", "Player 6", 
+    compareMultHands(addPlayerIndex(handListTest9Tie)) should be (List(Set("Player 1", "Player 7", "Player 8", "Player 5", "Player 6", 
       "Player 3", "Player 9", "Player 2", "Player 4")))
-    compareMultHands(addPlayerIndex(handListTest8SameRank)) should be (List(Set("Player 8"), Set("Player 7"), Set("Player 6"), 
+    compareMultHands(addPlayerIndex(handListTest9SameRank)) should be (List(Set("Player 8"), Set("Player 7"), Set("Player 6"), 
       Set("Player 5"), Set("Player 4"), Set("Player 3"), Set("Player 9"), Set("Player 2"), Set("Player 1")))
-    compareMultHands(addPlayerIndex(handListTest8SameRankReverse)) should be (List(Set("Player 1"), Set("Player 2"), Set("Player 9"), 
-      Set("Player 3"), Set("Player 4"), Set("Player 5"), Set("Player 6"), Set("Player 7"), Set("Player 8")))
+    compareMultHands(addPlayerIndex(handListTest9SameRankReverse)) should be (List(Set("Player 2"), Set("Player 3"), Set("Player 4"), 
+        Set("Player 5"), Set("Player 6"), Set("Player 7"), Set("Player 1"), Set("Player 8"), Set("Player 9")))
   }
 
   it should "compare 10 hands" in {
-    compareMultHands(addPlayerIndex(handListTest8)) should be (List(Set("Player 7"), Set("Player 8"), Set("Player 5"), Set("Player 6"), 
+    compareMultHands(addPlayerIndex(handListTest10)) should be (List(Set("Player 7"), Set("Player 8"), Set("Player 5"), Set("Player 6"), 
       Set("Player 4"), Set("Player 1"), Set("Player 3"), Set("Player 2"), Set("Player 9"), Set("Player 10")))
-    compareMultHands(addPlayerIndex(handListTest8Tie)) should be (List(Set("Player 1", "Player 7", "PLayer 8", "Player 10", "Player 5", 
+    compareMultHands(addPlayerIndex(handListTest10Tie)) should be (List(Set("Player 1", "Player 7", "Player 8", "Player 10", "Player 5", 
       "Player 6", "Player 3", "Player 9", "Player 2", "Player 4")))
-    compareMultHands(addPlayerIndex(handListTest8SameRank)) should be (List(Set("Player 8"), Set("Player 7"), Set("Player 6"), 
+    compareMultHands(addPlayerIndex(handListTest10SameRank)) should be (List(Set("Player 8"), Set("Player 7"), Set("Player 6"), 
       Set("Player 5"), Set("Player 4"), Set("Player 3"), Set("Player 9", "Player 10"), Set("Player 2"), Set("Player 1")))
-    compareMultHands(addPlayerIndex(handListTest8SameRankReverse)) should be (List(Set("Player 1"), Set("Player 2"), Set("Player 9", 
-      "Player 10"), Set("Player 3"), Set("Player 4"), Set("Player 5"), Set("Player 6"), Set("Player 7"), Set("Player 8")))
+    compareMultHands(addPlayerIndex(handListTest10SameRankReverse)) should be (List(Set("Player 3"), Set("Player 4"), 
+        Set("Player 5"), Set("Player 6"), Set("Player 7"), Set("Player 8"), Set("Player 1", "Player 2"), Set("Player 9"), Set("Player 10")))
   }
 }
+
