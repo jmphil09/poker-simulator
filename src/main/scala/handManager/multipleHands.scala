@@ -13,6 +13,7 @@ object multipleHands {
   //input: list of hands
   //output: list of a list hands in decreasing order
   def compareMultHands(handList: List[(Hand, Int)]): List[Set[String]] = {
+
     //this function finds all of the hands which tie "hand" in a list of 3-tuples 
     def findTiesWithHand(hand: Hand, handList: List[(Int, Hand, Int)]): List[(Int, Hand, Int)] = {
       def helper(hand1: Hand, handList1: List[(Int, Hand, Int)], result: List[(Int, Hand, Int)]): List[(Int, Hand, Int)] = {
@@ -22,7 +23,23 @@ object multipleHands {
       }
       helper(hand, handList, List())
     }
-    val orderedHands = handList.map(x => (x._1.handValue, x._1, x._2)).sortBy(x => x._1).reverse
+    
+    val orderedHandsUnsorted = handList.map(x => (x._1.handValue, x._1, x._2)).sortBy(x => x._1).reverse
+    
+    def sortOrderedHands(handList: List[(Int, Hand, Int)], newHandList: List[(Int, Hand, Int)]): List[(Int, Hand, Int)] = {
+      if(handList.isEmpty) newHandList
+      else if(handList.tail.isEmpty) newHandList++List(handList.head)
+      else {
+        val hand1Tuple = handList.head
+        val hand1 = handList.head._2
+        val hand2Tuple = handList.tail.head
+        val hand2 = handList.tail.head._2
+        if(compareHands(hand1,hand2)=="Player 1") sortOrderedHands(handList.tail,newHandList++List(hand1Tuple))
+        else sortOrderedHands(List(hand1Tuple)++handList.drop(2), sortOrderedHands(List(hand2Tuple)++newHandList,List()))
+      }
+    }
+    
+    val orderedHands = sortOrderedHands(orderedHandsUnsorted, List())
     
     //this function takes the list of handValues,hands,player numbers and outputs of list of the players in descending order
     def createStrList(orderedHands: List[(Int, Hand, Int)], result: List[Set[String]]): List[Set[String]] = {
@@ -38,10 +55,8 @@ object multipleHands {
           genList(listNums.tail, players ++ Set(playerStr))
         }
       }
-
       if (orderedHands.isEmpty) result
       else {
-        //ints of the best players
         val bestPlayers = findTiesWithHand(orderedHands.head._2, orderedHands).map(x => x._3)
         createStrList(subtractPlayers(bestPlayers, orderedHands), result ++ List(genList(bestPlayers, Set())))
       }
