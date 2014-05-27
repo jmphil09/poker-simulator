@@ -20,3 +20,10 @@ bin/
 .classpath
 .project
 .cache
+
+//Play stuff
+logs
+project/project
+project/target
+target
+tmp
