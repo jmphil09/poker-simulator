@@ -21,7 +21,7 @@ bin/
 .project
 .cache
 
-//Play stuff
+# Play specific
 logs
 project/project
 project/target
