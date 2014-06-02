@@ -60,9 +60,9 @@ package object handManager {
   def tieHands(p1Hand: Hand, p1Set: Set[Int], p2Hand: Hand, p2Set: Set[Int]): Boolean = {
     ((p1Set==p2Set) || (p1Set==p2Set && p1Hand.handValue==p2Hand.handValue))
   }
+  
   //this function will be used to break the tie between hands
   def tieBreaker(p1Hand: Hand, p2Hand: Hand): String = {
-
     val p1Pair = handAsOrderedPair(p1Hand.getCards)
     val p2Pair = handAsOrderedPair(p2Hand.getCards)
     val p1Set = p1Pair._1
@@ -86,15 +86,9 @@ package object handManager {
   }
 
   //this function will convert a hand to a list and set
-  def handAsOrderedPair(hand: String): (Set[Int], List[Int]) = {
-    val card1 = convertCards(hand(0))
-    val card2 = convertCards(hand(3))
-    val card3 = convertCards(hand(6))
-    val card4 = convertCards(hand(9))
-    val card5 = convertCards(hand(12))
-    val cardSet = Set(card1, card2, card3, card4, card5)
-    val cardList = List(card1, card2, card3, card4, card5)
-    (cardSet, cardList)
+  def handAsOrderedPair(hand: String): (Set[Int], List[Int]) = { 
+    val cardSet = Set(convertCards(hand(0)), convertCards(hand(3)), convertCards(hand(6)), convertCards(hand(9)), convertCards(hand(12)))
+    (cardSet, cardSet.toList)
   }
 
   //finds the maximum number of copies for ANY element in the list   
@@ -134,7 +128,11 @@ package object handManager {
     }
     if (cardList.length == 2 || checkMatch(cardList.head, cardList.tail)) cardList.head
     else determinePair(cardList.tail)
-  }
+  
+   /* val map = cardList.groupBy(x => x).map(x => (x._2.size, x._1))
+    val key = map.max._1
+    map(key)*/
+    }
 
   def compareOnePair(p1Pair: (Set[Int], List[Int]), p2Pair: (Set[Int], List[Int])): String = {
     val p1Set = p1Pair._1

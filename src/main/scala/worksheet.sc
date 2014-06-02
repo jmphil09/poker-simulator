@@ -6,18 +6,15 @@ import scala.collection.mutable._
 
 object worksheet {
 
-  val twoHandsStr = "2H 3D 4S 5C 6D 7H 7D 7S 2D AC"
-                                                  //> twoHandsStr  : String = 2H 3D 4S 5C 6D 7H 7D 7S 2D AC
-  val hand1 = findHand("2H 3D 4S 5C 6D")          //> hand1  : handManager.Hand = Straight(2H 3D 4S 5C 6D)
-  val hand2 = findHand("7H 7D 7S 2D AC")          //> hand2  : handManager.Hand = ThreeOfAKind(7H 7D 7S 2D AC)
-  findWinner(twoHandsStr)                         //> res0: String = Player 1
-  compareHands(hand1, hand2)                      //> res1: String = Player 1
-  val handListTest = List(Straight("2H 3D 4S 5C 6D"), OnePair("3H 3S 4D 2S 6D"), OnePair("TH 8H 5C QS TC"), Straight("2H 3C 4S 5C 6D"))
-                                                  //> handListTest  : List[Product with Serializable with handManager.Hand] = List
-                                                  //| (Straight(2H 3D 4S 5C 6D), OnePair(3H 3S 4D 2S 6D), OnePair(TH 8H 5C QS TC),
-                                                  //|  Straight(2H 3C 4S 5C 6D))
-
-
-  compareMultHands(handListTest)                  //> res2: List[List[String]] = List(List(Player 4, Player 1), List(Player 3), Li
-                                                  //| st(Player 2))
+  
+  val list = List(2,3,3,4,5)                      //> list  : List[Int] = List(2, 3, 3, 4, 5)
+  
+  list.groupBy(x => x)                            //> res0: scala.collection.immutable.Map[Int,List[Int]] = Map(2 -> List(2), 5 ->
+                                                  //|  List(5), 4 -> List(4), 3 -> List(3, 3))
+  val map = list.groupBy(x => x).map(x => (x._2.size, x._1))
+                                                  //> map  : scala.collection.immutable.Map[Int,Int] = Map(1 -> 4, 2 -> 3)
+  
+  val key = list.groupBy(x => x).map(x => (x._2.size, x._1)).max._1
+                                                  //> key  : Int = 2
+  map(key)                                        //> res1: Int = 3
 }
