@@ -57,8 +57,8 @@ package object handManager {
   //HELPER FUNCTIONS
   //this function will determine if 2 hands should tie
   //In order for 2 hands to tie, the cards must be equal, or they must be equal straights, or equal flushes
-  def tieHands(p1Hand: Hand, p1Set: Set[Int], p2Hand: Hand, p2Set: Set[Int]): Boolean = {
-    ((p1Set==p2Set) || (p1Set==p2Set && p1Hand.handValue==p2Hand.handValue))
+  def tieHands(p1HandVal: Int, p1Set: Set[Int], p2HandVal: Int, p2Set: Set[Int]): Boolean = {
+    (p1Set==p2Set && p1HandVal==p2HandVal)
   }
   
   //this function will be used to break the tie between hands
@@ -70,17 +70,17 @@ package object handManager {
     val p2Set = p2Pair._1
     val p2List = p2Pair._2
 
-    if(tieHands(p1Hand, p1Set, p2Hand, p2Set)) return "Tie"
+    if(tieHands(p1Hand.handValue, p1Set, p2Hand.handValue, p2Set)) return "Tie"
 
     (p1Hand, p2Hand) match {
       case (HighCard(cards1), HighCard(cards2)) => compareHighCard(p1Set, p2Set)
       case (OnePair(cards1), OnePair(cards2)) => compareOnePair(p1Pair, p2Pair)
       case (TwoPair(cards1), TwoPair(cards2)) => compareTwoPair(p1List, p2List)
-      case (ThreeOfAKind(cards1), ThreeOfAKind(cards2)) => compareThreeOfAKind(p1List, p2List)
+      case (ThreeOfAKind(cards1), ThreeOfAKind(cards2)) => compareOnePair(p1Pair, p2Pair)//compareThreeOfAKind(p1List, p2List)
       case (Straight(cards1), Straight(cards2)) => compareStraight(p1Set, p2Set)
       case (Flush(cards1), Flush(cards2)) => compareHighCard(p1Set, p2Set)
-      case (FullHouse(cards1), FullHouse(cards2)) => compareThreeOfAKind(p1List, p2List)
-      case (FourOfAKind(cards1), FourOfAKind(cards)) => compareThreeOfAKind(p1List, p2List)
+      case (FullHouse(cards1), FullHouse(cards2)) => compareOnePair(p1Pair, p2Pair)//compareThreeOfAKind(p1List, p2List)
+      case (FourOfAKind(cards1), FourOfAKind(cards)) => compareOnePair(p1Pair, p2Pair)//compareThreeOfAKind(p1List, p2List)
       case (StraightFlush(cards1), StraightFlush(cards2)) => compareStraight(p1Set, p2Set)
     }
   }
@@ -109,26 +109,17 @@ package object handManager {
     if(p1Set==Set(2,3,4,5,14)) "Player 2"
     else if(p2Set==Set(2,3,4,5,14)) "Player 1"
     else (compareHighCard(p1Set, p2Set))
-    
   }
 
-  //helper function
-  def determinePair(cardList: List[Int]): Int = {
-    //helper function
-    /*def checkMatch(num: Int, list: List[Int]): Boolean = {
-      var result = false
-      for (i <- 0 to list.length - 1) {
-        if (num == list(i)) result = true
-      }
-      result
-    }
-    if (cardList.length == 2 || checkMatch(cardList.head, cardList.tail)) cardList.head
-    else determinePair(cardList.tail)
-  */
+  //need to rename tests, then delete this function
+  def determinePair(cardList: List[Int]) = cardWithCopies(cardList)
+  
+  //finds the card which contains the most copies in a hand
+  def cardWithCopies(cardList: List[Int]): Int = {
     val map = cardList.groupBy(x => x).map(x => (x._2.size, x._1))
     val key = map.max._1
     map(key)
-    }
+  }  
 
   def compareOnePair(p1Pair: (Set[Int], List[Int]), p2Pair: (Set[Int], List[Int])): String = {
     val p1Set = p1Pair._1
@@ -136,24 +127,15 @@ package object handManager {
     val p2Set = p2Pair._1
     val p2List = p2Pair._2
 
-    if (determinePair(p1List) > determinePair(p2List)) "Player 1"
-    else if (determinePair(p1List) < determinePair(p2List)) "Player 2"
+    if (cardWithCopies(p1List) > cardWithCopies(p2List)) "Player 1"
+    else if (cardWithCopies(p1List) < cardWithCopies(p2List)) "Player 2"
     else compareHighCard(p1Set, p2Set)
   }
 
-  //TODO: combine this function with determinePair
-  //helper function
-  def determineTwoPair(cardList: List[Int]): (Int, Int) = {
-    var pair1 = 0
-    var pair2 = 0
-    for (i <- 0 to 4) {
-      for (j <- i + 1 to 4) {
-        if (cardList(i) == cardList(j) && cardList(i) != pair1) pair2 = cardList(i)
-      }
-    }
-    val highPair = List(pair1, pair2).max
-    val lowPair = List(pair1, pair2).min
-    (highPair, lowPair)
+  //finds the two pairs of a two pair hand
+  def determineTwoPair(cardList: List[Int]): (Int,Int) = {
+    val pairSet = cardList.groupBy(x => x).filter(x => x._2.size==2).keys.toSet
+    (pairSet.max,pairSet.min)
   }
 
   def compareTwoPair(p1List: List[Int], p2List: List[Int]): String = {
@@ -169,25 +151,6 @@ package object handManager {
     else if (p1LowPair > p2LowPair) "Player 1"
     else if (p1LowPair < p2LowPair) "Player 2"
     else compareHighCard(p1List.toSet, p2List.toSet)
-  }
-
-  //helper function
-  def cardWithCopies(cardList: List[Int]): Int = {
-    //outputs the number of times a number appears in a list
-    def helper(num: Int, cardList: List[Int], counter: Int): Int = {
-      if (cardList.isEmpty) counter
-      else if (num == cardList.head) helper(num, cardList.tail, counter + 1)
-      else helper(num, cardList.tail, counter)
-    }
-    var result = 0
-    var counter = 0
-    for (num <- cardList) {
-      if (helper(num, cardList, 0) > counter) {
-        result = num
-        counter = helper(num, cardList, 0)
-      }
-    }
-    result
   }
 
   def compareThreeOfAKind(p1List: List[Int], p2List: List[Int]): String = {
