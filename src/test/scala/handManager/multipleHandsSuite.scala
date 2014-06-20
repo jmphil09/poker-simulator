@@ -139,4 +139,3 @@ class multipleHandsSuite extends FlatSpec with Matchers {
         Set("Player 5"), Set("Player 6"), Set("Player 7"), Set("Player 8"), Set("Player 1", "Player 2"), Set("Player 9"), Set("Player 10")))
   }
 }
-
