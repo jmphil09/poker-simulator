@@ -87,8 +87,8 @@ package object handManager {
 
   //this function will convert a hand to a list and set
   def handAsOrderedPair(hand: String): (Set[Int], List[Int]) = { 
-    val cardSet = Set(convertCards(hand(0)), convertCards(hand(3)), convertCards(hand(6)), convertCards(hand(9)), convertCards(hand(12)))
-    (cardSet, cardSet.toList)
+    val cardList = List(convertCards(hand(0)), convertCards(hand(3)), convertCards(hand(6)), convertCards(hand(9)), convertCards(hand(12)))
+    (cardList.toSet, cardList)
   }
 
   //finds the maximum number of copies for ANY element in the list   
@@ -106,20 +106,16 @@ package object handManager {
   }
 
   def compareStraight(p1Set: Set[Int], p2Set: Set[Int]): String = {
-    var p1Wheel = false
-    var p2Wheel = false
-    if (p1Set == Set(2, 3, 4, 5, 14)) p1Wheel = true
-    if (p2Set == Set(2, 3, 4, 5, 14)) p2Wheel = true
-
-    if (p1Wheel && !p2Wheel) "Player 2"
-    else if (p2Wheel && !p1Wheel) "Player 1"
+    if(p1Set==Set(2,3,4,5,14)) "Player 2"
+    else if(p2Set==Set(2,3,4,5,14)) "Player 1"
     else (compareHighCard(p1Set, p2Set))
+    
   }
 
   //helper function
   def determinePair(cardList: List[Int]): Int = {
     //helper function
-    def checkMatch(num: Int, list: List[Int]): Boolean = {
+    /*def checkMatch(num: Int, list: List[Int]): Boolean = {
       var result = false
       for (i <- 0 to list.length - 1) {
         if (num == list(i)) result = true
@@ -128,10 +124,10 @@ package object handManager {
     }
     if (cardList.length == 2 || checkMatch(cardList.head, cardList.tail)) cardList.head
     else determinePair(cardList.tail)
-  
-   /* val map = cardList.groupBy(x => x).map(x => (x._2.size, x._1))
+  */
+    val map = cardList.groupBy(x => x).map(x => (x._2.size, x._1))
     val key = map.max._1
-    map(key)*/
+    map(key)
     }
 
   def compareOnePair(p1Pair: (Set[Int], List[Int]), p2Pair: (Set[Int], List[Int])): String = {
