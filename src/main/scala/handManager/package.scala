@@ -55,6 +55,7 @@ package object handManager {
   }
 
   //HELPER FUNCTIONS
+  
   //this function will determine if 2 hands should tie
   //In order for 2 hands to tie, the cards must be equal, or they must be equal straights, or equal flushes
   def tieHands(p1HandVal: Int, p1Set: Set[Int], p2HandVal: Int, p2Set: Set[Int]): Boolean = {
@@ -74,13 +75,13 @@ package object handManager {
 
     (p1Hand, p2Hand) match {
       case (HighCard(cards1), HighCard(cards2)) => compareHighCard(p1Set, p2Set)
-      case (OnePair(cards1), OnePair(cards2)) => compareOnePair(p1Pair, p2Pair)
+      case (OnePair(cards1), OnePair(cards2)) => compareCardSets(p1Pair, p2Pair)
       case (TwoPair(cards1), TwoPair(cards2)) => compareTwoPair(p1List, p2List)
-      case (ThreeOfAKind(cards1), ThreeOfAKind(cards2)) => compareOnePair(p1Pair, p2Pair)//compareThreeOfAKind(p1List, p2List)
+      case (ThreeOfAKind(cards1), ThreeOfAKind(cards2)) => compareCardSets(p1Pair, p2Pair)
       case (Straight(cards1), Straight(cards2)) => compareStraight(p1Set, p2Set)
       case (Flush(cards1), Flush(cards2)) => compareHighCard(p1Set, p2Set)
-      case (FullHouse(cards1), FullHouse(cards2)) => compareOnePair(p1Pair, p2Pair)//compareThreeOfAKind(p1List, p2List)
-      case (FourOfAKind(cards1), FourOfAKind(cards)) => compareOnePair(p1Pair, p2Pair)//compareThreeOfAKind(p1List, p2List)
+      case (FullHouse(cards1), FullHouse(cards2)) => compareCardSets(p1Pair, p2Pair)
+      case (FourOfAKind(cards1), FourOfAKind(cards)) => compareCardSets(p1Pair, p2Pair)
       case (StraightFlush(cards1), StraightFlush(cards2)) => compareStraight(p1Set, p2Set)
     }
   }
@@ -121,7 +122,8 @@ package object handManager {
     map(key)
   }  
 
-  def compareOnePair(p1Pair: (Set[Int], List[Int]), p2Pair: (Set[Int], List[Int])): String = {
+  //used to compare onePair, threeOfAKind, fullhouse, and fourOfAKind hands
+  def compareCardSets(p1Pair: (Set[Int], List[Int]), p2Pair: (Set[Int], List[Int])): String = {
     val p1Set = p1Pair._1
     val p1List = p1Pair._2
     val p2Set = p2Pair._1
@@ -151,12 +153,5 @@ package object handManager {
     else if (p1LowPair > p2LowPair) "Player 1"
     else if (p1LowPair < p2LowPair) "Player 2"
     else compareHighCard(p1List.toSet, p2List.toSet)
-  }
-
-  def compareThreeOfAKind(p1List: List[Int], p2List: List[Int]): String = {
-    val p1Three = cardWithCopies(p1List)
-    val p2Three = cardWithCopies(p2List)
-    if (p1Three > p2Three) "Player 1"
-    else "Player 2"
   }
 }
